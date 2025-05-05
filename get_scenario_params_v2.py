@@ -1,3 +1,7 @@
+# Copyright (c) 2010-2025, InterDigital
+# All rights reserved. 
+# See LICENSE under the root folder.
+
 import os
 import numpy as np
 import scipy

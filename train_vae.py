@@ -1,3 +1,7 @@
+# Copyright (c) 2010-2025, InterDigital
+# All rights reserved. 
+# See LICENSE under the root folder.
+
 '''
 Use this script to train a Variational Autoencoder on saved channel data with an inline channel model.
 '''

@@ -1,3 +1,7 @@
+# Copyright (c) 2010-2025, InterDigital
+# All rights reserved. 
+# See LICENSE under the root folder.
+
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.autograd as autograd
