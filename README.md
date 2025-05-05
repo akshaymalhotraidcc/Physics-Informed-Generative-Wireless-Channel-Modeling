@@ -10,8 +10,6 @@ This repo contains the source code for running the physics-based generative mode
 - `scipy==1.10.1`
 - `torch==2.4.1`
 - `torchinfo==1.8.0`
-- `umap==0.1.1`
-- `umap-learn==0.5.7`
 
 
 ## Process
