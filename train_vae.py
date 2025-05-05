@@ -29,7 +29,6 @@ import matplotlib.pyplot as plt
 import datetime
 import argparse
 import yaml
-from prettytable import PrettyTable
 import vae_model as vae
 import sim_model as auto
 from torchinfo import summary
