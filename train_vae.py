@@ -66,51 +66,19 @@ with open('weighted_model_results/'+exp_name+'/config.yml', 'w') as outfile:
 
 # Functions for performance metric calculations
 
-def mmd_linear(X, Y):
+def mmd_linear(gen_features, ref_features):
     '''
     MMD using a Linear Kernel
 
-    X : Array of size Num Samples x Features for Distribution 1
-    Y : Array of size Num Samples x Features for Distribution 2
+    gen_features : Array of size Num Samples x Features for Distribution 1
+    ref_features : Array of size Num Samples x Features for Distribution 2
     '''
     
-    XX = np.dot(X, X.T)
-    YY = np.dot(Y, Y.T)
-    XY = np.dot(X, Y.T)
-    return XX.mean() + YY.mean() - 2 * XY.mean()
+    gen_sim = gen_features@(np.transpose(gen_features))
+    ref_sim = ref_features@(np.transpose(ref_features))
+    cross_sim = gen_features@(np.transpose(ref_features))
+    return np.mean(gen_sim) + np.mean(ref_sim) - 2 * np.mean(cross_sim)
 
-def wasserstein_dist(u_values,v_values, u_weights=None, v_weights=None):
-
-    '''
-    2-Wasserstein distance between source and target distributions
-
-    u_values = Array of size Num Samples x Features for Distribution 1
-    v_values = Array of size Num Samples x Features for Distribution 2
-    '''
-    
-    m, n = len(u_values), len(v_values)
-
-    # create constraints
-    A_upper_part = sparse.block_diag((np.ones((1, n)), ) * m)
-    A_lower_part = sparse.hstack((sparse.eye(n), ) * m)
-    
-    # sparse constraint matrix of size (m + n)*(m * n)
-    A = sparse.vstack((A_upper_part, A_lower_part))
-    A = sparse.coo_array(A)
-
-    # get cost matrix
-    D = distance_matrix(u_values, v_values, p=2)
-    cost = D.ravel()
-
-    # create the minimization target
-    p_u = np.full(m, 1/m) if u_weights is None else u_weights/np.sum(u_weights)
-    p_v = np.full(n, 1/n) if v_weights is None else v_weights/np.sum(v_weights)
-    b = np.concatenate((p_u, p_v), axis=0)
-
-    # solving LP
-    constraints = LinearConstraint(A=A.T, ub=cost)
-    opt_res = milp(c=-b, constraints=constraints, bounds=(-np.inf, np.inf))
-    return -opt_res.fun
 
 
 # Dataset to hold and serve DFT channel samples
